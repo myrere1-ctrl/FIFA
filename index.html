@@ -153,6 +153,10 @@
 <div class="header">
   <div class="logo">⚽ World Cup Oracle<span>AI — FIFA 2026</span></div>
   <div class="api-section">
+    <select id="langSelect" style="background:var(--bg3);border:1px solid var(--border);color:var(--text);padding:0.4rem 0.6rem;border-radius:6px;font-size:0.8rem;cursor:pointer;">
+      <option value="en">🇬🇧 English</option>
+      <option value="id">🇮🇩 Indonesia</option>
+    </select>
     <input class="api-input" type="password" id="apiKey" placeholder="sk-ant-... (API Key)" oninput="updateApiStatus()" />
     <span class="api-badge" id="apiBadge">No Key</span>
   </div>
@@ -379,6 +383,8 @@ function updateApiStatus() {
 }
 
 function getKey() { return document.getElementById('apiKey').value.trim(); }
+function getLang() { return document.getElementById('langSelect').value; }
+function langInstr() { return getLang()==='id' ? 'IMPORTANT: Write ALL text fields in Bahasa Indonesia. Numbers, percentages, and team names stay as-is.' : 'Write all text fields in English.'; }
 
 function showPage(id, btn) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
@@ -442,6 +448,7 @@ async function predictMatch() {
   out.innerHTML = '<div class="ai-output thinking">⏳ AI is crunching the data...</div>';
 
   const prompt = `You are a FIFA World Cup 2026 AI analyst. Predict the match: ${a} vs ${b} in the ${stage} stage.
+${langInstr()}
 
 Respond ONLY with valid JSON, no markdown, no preamble:
 {
@@ -518,6 +525,7 @@ async function analyzeRoad() {
   const out = document.getElementById('roadResult');
 
   const prompt = `You are a FIFA 2026 analyst. Analyze ${team}'s road to the 2026 FIFA World Cup.
+${langInstr()}
 
 Respond ONLY with valid JSON:
 {
@@ -590,6 +598,7 @@ async function analyzeSquad() {
   const out = document.getElementById('squadResult');
 
   const prompt = `You are a FIFA 2026 scout analyst. Analyze ${team}'s squad.
+${langInstr()}
 
 Respond ONLY with valid JSON:
 {
@@ -656,6 +665,7 @@ async function simulateGroup(runs) {
   out.innerHTML = '<div class="ai-output thinking">⏳ Simulating group stage...</div>';
 
   const prompt = `You are a FIFA 2026 group stage simulator. Simulate ${group} with teams: ${teams.join(', ')}.
+${langInstr()}
 ${runs > 1 ? `Run ${runs} Monte Carlo simulations and give average/probability results.` : 'Simulate the full matchday results.'}
 
 Respond ONLY with valid JSON:
@@ -724,6 +734,7 @@ async function generatePath() {
   const out = document.getElementById('pathResult');
 
   const prompt = `You are a FIFA 2026 AI predictor. Generate the likely knockout path for ${team}.
+${langInstr()}
 
 Respond ONLY with valid JSON:
 {
@@ -788,6 +799,7 @@ async function detectUpsets() {
   const out = document.getElementById('upsetResult');
 
   const prompt = `You are a FIFA 2026 AI upset hunter. Find 5 potential upset matches in the ${stage} stage.
+${langInstr()}
 
 An upset is when a lower-ranked team has significantly higher actual chances than the market/consensus implies.
 
@@ -843,6 +855,7 @@ async function generateStory() {
   const out = document.getElementById('storyResult');
 
   const prompt = `You are a viral football content creator for FIFA 2026. Create content for: ${a} vs ${b}, format: ${format}.
+${langInstr()}
 
 Respond ONLY with valid JSON:
 {
@@ -900,4 +913,5 @@ populateSelects();
 </script>
 </body>
 </html>
+
 
